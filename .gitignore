@@ -1,0 +1,39 @@
+cat > .gitignore << 'EOL'
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production builds
+build/
+dist/
+
+# Environment files
+.env.local
+.env.production
+.env
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+Docker.app/
+.docker/
+
+# Uploads
+uploads/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/

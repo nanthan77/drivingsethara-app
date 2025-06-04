@@ -1,0 +1,3 @@
+# Create frontend Dockerfile
+touch client/Dockerfile.frontend
+open -a TextEdit client/Dockerfile.frontend

@@ -1,0 +1,53 @@
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: drivingsethara-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: drivingsethara
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - drivingsethara-network
+
+  backend:
+    image: node:16-alpine
+    container_name: drivingsethara-backend
+    restart: always
+    ports:
+      - "5001:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/drivingsethara?authSource=admin
+      - JWT_SECRET=8d153a00534effbe29ff883e8d153a00534effbe29ff883e
+      - JWT_EXPIRES_IN=1d
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    command: sh -c "npm install && node server.js"
+    depends_on:
+      - mongodb
+    networks:
+      - drivingsethara-network
+
+  frontend:
+    image: nginx:alpine
+    container_name: drivingsethara-frontend
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./client:/usr/share/nginx/html
+    networks:
+      - drivingsethara-network
+
+networks:
+  drivingsethara-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
